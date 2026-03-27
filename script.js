@@ -1,4 +1,68 @@
 // ============================================================
+// ESTRELLAS — canvas de fondo completo, encima del tornasol
+// ============================================================
+(function() {
+  var canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;';
+  document.body.appendChild(canvas);
+  var ctx = canvas.getContext('2d');
+  var W, H, stars = [];
+
+  function initStars() {
+    stars = [];
+    for (var i = 0; i < 90; i++) {
+      stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.6 + 0.3,
+        speed: Math.random() * 0.6 + 0.1,
+        phase: Math.random() * Math.PI * 2,
+        driftAmp: Math.random() * 12 + 4,
+        driftFreq: Math.random() * 0.0004 + 0.0002
+      });
+    }
+  }
+
+  function resize() {
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = W;
+    canvas.height = H;
+    initStars();
+  }
+
+  var scrollProgress = 0;
+  window.addEventListener('scroll', function() {
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    scrollProgress = max > 0 ? window.scrollY / max : 0;
+  }, { passive: true });
+
+  window.addEventListener('resize', resize);
+  resize();
+
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    stars.forEach(function(s) {
+      var yOff = scrollProgress * s.speed * H * 1.5;
+      var y = ((s.y - yOff) % H + H) % H;
+      var x = s.x + Math.sin(t * s.driftFreq + s.phase) * s.driftAmp;
+      var tw = 0.35 + 0.3 * Math.sin(t * 0.0012 + s.phase);
+      var g = ctx.createRadialGradient(x, y, 0, x, y, s.r * 4);
+      g.addColorStop(0, 'rgba(180,142,200,' + tw + ')');
+      g.addColorStop(0.5, 'rgba(124,92,191,' + (tw * 0.35) + ')');
+      g.addColorStop(1, 'rgba(124,92,191,0)');
+      ctx.beginPath(); ctx.arc(x, y, s.r * 4, 0, Math.PI * 2);
+      ctx.fillStyle = g; ctx.fill();
+      ctx.beginPath(); ctx.arc(x, y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(230,210,255,' + (tw * 0.95) + ')';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+// ============================================================
 // NAV SCROLL
 // ============================================================
 window.addEventListener('scroll', function() {
