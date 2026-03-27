@@ -15,7 +15,7 @@
         x: Math.random() * W,
         y: Math.random() * H,
         r: Math.random() * 1.6 + 0.3,
-        speed: Math.random() * 0.25 + 0.04,
+        speed: Math.random() * 0.6 + 0.1,
         phase: Math.random() * Math.PI * 2,
         driftAmp: Math.random() * 12 + 4,
         driftFreq: Math.random() * 0.0004 + 0.0002
@@ -43,7 +43,7 @@
   function draw(t) {
     ctx.clearRect(0, 0, W, H);
     stars.forEach(function(s) {
-      var yOff = scrollProgress * s.speed * H * 0.6;
+      var yOff = scrollProgress * s.speed * H * 1.5;
       var y = ((s.y - yOff) % H + H) % H;
       var x = s.x + Math.sin(t * s.driftFreq + s.phase) * s.driftAmp;
       var tw = 0.35 + 0.3 * Math.sin(t * 0.0012 + s.phase);
