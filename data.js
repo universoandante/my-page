@@ -16,6 +16,8 @@ var POSTS = [
     categoria: 'personal',
     titulo_es: 'Algo más que la felicidad — sobre El hombre en busca de sentido',
     titulo_en: 'More than happiness — on Man\'s Search for Meaning',
+    subtitulo_es: 'Sobre <em>El hombre en busca de sentido</em> de Viktor Frankl',
+    subtitulo_en: 'On Viktor Frankl\'s <em>Man\'s Search for Meaning</em>',
     tag: 'Personal',
     destacado: true,
     activo: true,
